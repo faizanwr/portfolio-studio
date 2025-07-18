@@ -13,7 +13,14 @@ const letter = {
             name: 'number',
             title: 'Letter Number',
             type: 'number',
-            validation: Rule => Rule.required().min(1)
+            readOnly: true,
+            initialValue: async (doc, context) => {
+                const { getClient } = context
+                const client = getClient({ apiVersion: '2023-10-10' })
+                const letters = await client.fetch('count(*[_type == "letter"])')
+                return letters + 1
+            },
+            validation: Rule => Rule.required()
         },
         {
             name: 'title',
@@ -35,6 +42,11 @@ const letter = {
             name: 'publishedAt',
             title: 'Published At',
             type: 'datetime',
+            initialValue: () => new Date().toISOString(),
+            readOnly: ({ document }) => {
+                // Read-only if document already exists (has _id)
+                return !!document?._id
+            },
             validation: Rule => Rule.required()
         },
         {
@@ -42,8 +54,23 @@ const letter = {
             title: 'Featured Image',
             type: 'image',
             options: {
-                hotspot: true
-            }
+                hotspot: true,
+                crop: true,
+                sources: [
+                    {
+                        name: 'square',
+                        title: 'Square (1:1)',
+                        aspectRatio: 1
+                    }
+                ]
+            },
+            fields: [
+                {
+                    name: 'alt',
+                    title: 'Alt Text',
+                    type: 'string'
+                }
+            ]
         },
         {
             name: 'content',
@@ -52,10 +79,21 @@ const letter = {
             of: [
                 {
                     type: 'block',
+                    styles: [
+                        { title: 'Normal', value: 'normal' },
+                        { title: 'H1', value: 'h1' },
+                        { title: 'H2', value: 'h2' },
+                        { title: 'Quote', value: 'blockquote' }
+                    ],
+                    lists: [
+                        { title: 'Bullet', value: 'bullet' },
+                        { title: 'Number', value: 'number' }
+                    ],
                     marks: {
                         decorators: [
                             { title: 'Strong', value: 'strong' },
-                            { title: 'Emphasis', value: 'em' }
+                            { title: 'Emphasis', value: 'em' },
+                            { title: 'Underline', value: 'underline' }
                         ],
                         annotations: [
                             {
@@ -90,9 +128,10 @@ const letter = {
             media: 'image'
         },
         prepare(selection) {
-            const { title, number } = selection
+            const { title, number, media } = selection
             return {
-                title: `${number}. ${title}`
+                title: `${number}. ${title}`,
+                media: media
             }
         }
     }
