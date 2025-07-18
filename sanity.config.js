@@ -1,18 +1,14 @@
-// sanity.config.js
-import { defineConfig } from 'sanity'
-import { structureTool } from 'sanity/structure'
-import { visionTool } from '@sanity/vision'
-
 // Letter schema
 const letter = {
     name: 'letter',
-    title: 'Letter',
+    title: '', // Remove "Letter" title
     type: 'document',
     fields: [
         {
             name: 'number',
             title: 'Letter Number',
             type: 'number',
+            hidden: true, // Hide from interface but keep functional
             readOnly: true,
             initialValue: async (doc, context) => {
                 const { getClient } = context
@@ -32,9 +28,15 @@ const letter = {
             name: 'slug',
             title: 'Slug',
             type: 'slug',
-            options: {
-                source: 'title',
-                maxLength: 96
+            hidden: true, // Hide from interface
+            initialValue: async (doc, context) => {
+                const { getClient } = context
+                const client = getClient({ apiVersion: '2023-10-10' })
+                const letters = await client.fetch('count(*[_type == "letter"])')
+                const letterNumber = letters + 1
+                return {
+                    current: letterNumber.toString()
+                }
             },
             validation: Rule => Rule.required()
         },
@@ -42,11 +44,9 @@ const letter = {
             name: 'publishedAt',
             title: 'Published At',
             type: 'datetime',
+            hidden: true, // Hide from interface
             initialValue: () => new Date().toISOString(),
-            readOnly: ({ document }) => {
-                // Read-only if document already exists (has _id)
-                return !!document?._id
-            },
+            readOnly: true,
             validation: Rule => Rule.required()
         },
         {
@@ -117,6 +117,7 @@ const letter = {
             name: 'views',
             title: 'Views',
             type: 'number',
+            hidden: true, // Hide from interface
             initialValue: 0,
             readOnly: true
         }
@@ -124,29 +125,14 @@ const letter = {
     preview: {
         select: {
             title: 'title',
-            number: 'number',
-            media: 'image'
+            number: 'number'
         },
         prepare(selection) {
-            const { title, number, media } = selection
+            const { title, number } = selection
             return {
-                title: `${number}. ${title}`,
-                media: media
+                title: `Letter ${number}`, // Show "Letter X" instead of "Untitled"
+                subtitle: title || 'Draft' // Show title as subtitle
             }
         }
     }
 }
-
-export default defineConfig({
-    name: 'default',
-    title: 'Portfolio Studio',
-
-    projectId: 'slncaqgc',
-    dataset: 'production',
-
-    plugins: [structureTool(), visionTool()],
-
-    schema: {
-        types: [letter],
-    },
-})
