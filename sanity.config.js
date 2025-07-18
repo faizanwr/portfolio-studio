@@ -6,7 +6,7 @@ import { visionTool } from '@sanity/vision'
 // Letter schema
 const letter = {
     name: 'letter',
-    title: ' ', // Remove "Letter" title
+    title: '', // Remove "Letter" title
     type: 'document',
     fields: [
         {
@@ -123,14 +123,15 @@ const letter = {
     preview: {
         select: {
             title: 'title',
-            number: 'number'
+            number: 'number',
+            media: 'image'
         },
         prepare(selection) {
-            const { title, number } = selection
+            const { title, number, media } = selection
             return {
-                title: '🍉 Next great letter waiting!', // Static encouraging text
-                subtitle: ' ', // Remove subtitle completely
-                media: null // Remove any media preview
+                title: title || 'Untitled Letter', // Show actual title
+                subtitle: number ? `Letter ${number}` : 'Draft', // Show letter number
+                media: media // Show preview image
             }
         }
     }
@@ -139,13 +140,10 @@ const letter = {
 export default defineConfig({
     name: 'default',
     title: 'Portfolio Studio',
-
     projectId: 'slncaqgc',
     dataset: 'production',
-
     plugins: [structureTool(), visionTool()],
-
     schema: {
         types: [letter],
-    },
+    }
 })
