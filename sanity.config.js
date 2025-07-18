@@ -1,7 +1,12 @@
+// sanity.config.js
+import { defineConfig } from 'sanity'
+import { structureTool } from 'sanity/structure'
+import { visionTool } from '@sanity/vision'
+
 // Letter schema
 const letter = {
     name: 'letter',
-    title: '', // Remove "Letter" title
+    title: ' ', // Remove "Letter" title
     type: 'document',
     fields: [
         {
@@ -51,7 +56,7 @@ const letter = {
         },
         {
             name: 'image',
-            title: 'Featured Image',
+            title: 'Image',
             type: 'image',
             options: {
                 hotspot: true,
@@ -64,13 +69,6 @@ const letter = {
                     }
                 ]
             },
-            fields: [
-                {
-                    name: 'alt',
-                    title: 'Alt Text',
-                    type: 'string'
-                }
-            ]
         },
         {
             name: 'content',
@@ -130,9 +128,24 @@ const letter = {
         prepare(selection) {
             const { title, number } = selection
             return {
-                title: `Letter ${number}`, // Show "Letter X" instead of "Untitled"
-                subtitle: title || 'Draft' // Show title as subtitle
+                title: '🍉 Next great letter waiting!', // Static encouraging text
+                subtitle: ' ', // Remove subtitle completely
+                media: null // Remove any media preview
             }
         }
     }
 }
+
+export default defineConfig({
+    name: 'default',
+    title: 'Portfolio Studio',
+
+    projectId: 'slncaqgc',
+    dataset: 'production',
+
+    plugins: [structureTool(), visionTool()],
+
+    schema: {
+        types: [letter],
+    },
+})
