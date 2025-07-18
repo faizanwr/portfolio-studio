@@ -13,7 +13,6 @@ const letter = {
             name: 'number',
             title: 'Letter Number',
             type: 'number',
-<<<<<<< HEAD
             hidden: true, // Hide from interface but keep functional
             readOnly: true,
             initialValue: async (doc, context) => {
@@ -23,9 +22,6 @@ const letter = {
                 return letters + 1
             },
             validation: Rule => Rule.required()
-=======
-            validation: Rule => Rule.required().min(1)
->>>>>>> parent of 8169318e (test the changes to make it more robust)
         },
         {
             name: 'title',
@@ -53,12 +49,9 @@ const letter = {
             name: 'publishedAt',
             title: 'Published At',
             type: 'datetime',
-<<<<<<< HEAD
             hidden: true, // Hide from interface
             initialValue: () => new Date().toISOString(),
             readOnly: true,
-=======
->>>>>>> parent of 8169318e (test the changes to make it more robust)
             validation: Rule => Rule.required()
         },
         {
@@ -66,7 +59,6 @@ const letter = {
             title: 'Image',
             type: 'image',
             options: {
-<<<<<<< HEAD
                 hotspot: true,
                 crop: true,
                 sources: [
@@ -77,10 +69,6 @@ const letter = {
                     }
                 ]
             },
-=======
-                hotspot: true
-            }
->>>>>>> parent of 8169318e (test the changes to make it more robust)
         },
         {
             name: 'content',
@@ -89,10 +77,21 @@ const letter = {
             of: [
                 {
                     type: 'block',
+                    styles: [
+                        { title: 'Normal', value: 'normal' },
+                        { title: 'H1', value: 'h1' },
+                        { title: 'H2', value: 'h2' },
+                        { title: 'Quote', value: 'blockquote' }
+                    ],
+                    lists: [
+                        { title: 'Bullet', value: 'bullet' },
+                        { title: 'Number', value: 'number' }
+                    ],
                     marks: {
                         decorators: [
                             { title: 'Strong', value: 'strong' },
-                            { title: 'Emphasis', value: 'em' }
+                            { title: 'Emphasis', value: 'em' },
+                            { title: 'Underline', value: 'underline' }
                         ],
                         annotations: [
                             {
@@ -129,13 +128,9 @@ const letter = {
         prepare(selection) {
             const { title, number } = selection
             return {
-<<<<<<< HEAD
                 title: '🍉 Next great letter waiting!', // Static encouraging text
                 subtitle: ' ', // Remove subtitle completely
                 media: null // Remove any media preview
-=======
-                title: `${number}. ${title}`
->>>>>>> parent of 8169318e (test the changes to make it more robust)
             }
         }
     }
