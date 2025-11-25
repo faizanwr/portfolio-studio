@@ -6,6 +6,12 @@ export default defineType({
     type: 'document',
     fields: [
         defineField({
+            name: 'orderRank',
+            title: 'Order Rank',
+            type: 'string',
+            hidden: true,
+        }),
+        defineField({
             name: 'icon',
             title: 'Icon',
             description: 'Project icon/logo (recommended: 512x512px, max 500KB)',
@@ -52,9 +58,10 @@ export default defineType({
             type: 'string',
             options: {
                 list: [
-                    { title: 'App', value: 'App' },
+                    { title: 'Product', value: 'Product' },
                     { title: 'Web', value: 'Web' },
                     { title: 'Brand', value: 'Brand' },
+                    { title: 'Multiplatform', value: 'Multiplatform' },
                     { title: 'Other', value: 'Other' },
                 ],
                 layout: 'radio',
@@ -67,9 +74,21 @@ export default defineType({
             type: 'string',
             options: {
                 list: [
-                    { title: 'Development', value: 'Development' },
-                    { title: 'Design', value: 'Design' },
-                    { title: 'Product', value: 'Product' },
+                    { title: 'Business', value: 'Business' },
+                    { title: 'Creative', value: 'Creative' },
+                    { title: 'Developer Tools', value: 'Developer Tools' },
+                    { title: 'E-Commerce', value: 'E-Commerce' },
+                    { title: 'Education', value: 'Education' },
+                    { title: 'Entertainment', value: 'Entertainment' },
+                    { title: 'Finance', value: 'Finance' },
+                    { title: 'Food & Drink', value: 'Food & Drink' },
+                    { title: 'Kids', value: 'Kids' },
+                    { title: 'Lifestyle', value: 'Lifestyle' },
+                    { title: 'Productivity', value: 'Productivity' },
+                    { title: 'Social Networking', value: 'Social Networking' },
+                    { title: 'Sports', value: 'Sports' },
+                    { title: 'Utility', value: 'Utility' },
+                    { title: 'Other', value: 'Other' },
                 ],
                 layout: 'radio',
             },
