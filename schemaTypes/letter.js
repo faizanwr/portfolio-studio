@@ -52,10 +52,13 @@ export default {
         {
             name: 'image',
             title: 'Image',
+            description: 'Letter cover image (1:1 aspect ratio, max 1MB)',
             type: 'image',
             options: {
                 hotspot: true,
                 crop: true,
+                accept: 'image/png, image/jpeg, image/webp',
+                metadata: ['blurhash', 'lqip', 'palette'],
                 sources: [
                     {
                         name: 'square',
@@ -64,6 +67,14 @@ export default {
                     }
                 ]
             },
+            fields: [
+                {
+                    name: 'alt',
+                    type: 'string',
+                    title: 'Alternative text',
+                    description: 'Describe the image for accessibility',
+                },
+            ],
         },
         {
             name: 'content',

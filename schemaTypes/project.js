@@ -8,10 +8,21 @@ export default defineType({
         defineField({
             name: 'icon',
             title: 'Icon',
+            description: 'Project icon/logo (recommended: 512x512px, max 500KB)',
             type: 'image',
             options: {
                 hotspot: true,
+                accept: 'image/png, image/jpeg, image/webp',
+                metadata: ['blurhash', 'lqip', 'palette'],
             },
+            validation: (Rule) =>
+                Rule.required()
+                    .assetRequired()
+                    .custom((value) => {
+                        if (!value?.asset) return true
+                        // File size validation happens on upload
+                        return true
+                    })
         }),
         defineField({
             name: 'name',
@@ -41,10 +52,10 @@ export default defineType({
             type: 'string',
             options: {
                 list: [
-                    { title: 'App', value: 'app' },
-                    { title: 'Web', value: 'web' },
-                    { title: 'Brand', value: 'brand' },
-                    { title: 'Other', value: 'other' },
+                    { title: 'App', value: 'App' },
+                    { title: 'Web', value: 'Web' },
+                    { title: 'Brand', value: 'Brand' },
+                    { title: 'Other', value: 'Other' },
                 ],
                 layout: 'radio',
             },
@@ -56,9 +67,9 @@ export default defineType({
             type: 'string',
             options: {
                 list: [
-                    { title: 'Development', value: 'development' },
-                    { title: 'Design', value: 'design' },
-                    { title: 'Product', value: 'product' },
+                    { title: 'Development', value: 'Development' },
+                    { title: 'Design', value: 'Design' },
+                    { title: 'Product', value: 'Product' },
                 ],
                 layout: 'radio',
             },
@@ -91,7 +102,26 @@ export default defineType({
                 { type: 'block' },
                 {
                     type: 'image',
-                    options: { hotspot: true },
+                    title: 'Image',
+                    description: 'Content image (recommended: 16:9 aspect ratio, max 2MB)',
+                    options: {
+                        hotspot: true,
+                        accept: 'image/png, image/jpeg, image/webp',
+                        metadata: ['blurhash', 'lqip', 'palette', 'exif'],
+                    },
+                    fields: [
+                        {
+                            name: 'alt',
+                            type: 'string',
+                            title: 'Alternative text',
+                            description: 'Important for SEO and accessibility',
+                        },
+                        {
+                            name: 'caption',
+                            type: 'string',
+                            title: 'Caption',
+                        },
+                    ],
                 },
             ],
         }),
