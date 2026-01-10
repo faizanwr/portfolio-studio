@@ -55,16 +55,15 @@ export default defineType({
         defineField({
             name: 'designType',
             title: 'Design Type',
-            type: 'string',
+            type: 'array',
+            of: [{ type: 'string' }],
             options: {
                 list: [
                     { title: 'Product', value: 'Product' },
                     { title: 'Web', value: 'Web' },
                     { title: 'Brand', value: 'Brand' },
-                    { title: 'Multiplatform', value: 'Multiplatform' },
                     { title: 'Other', value: 'Other' },
                 ],
-                layout: 'radio',
             },
             validation: (Rule) => Rule.required(),
         }),
