@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity'
+import { VideoPreview } from './VideoPreview'
 
 export default defineType({
     name: 'project',
@@ -140,6 +141,40 @@ export default defineType({
                             title: 'Caption',
                         },
                     ],
+                },
+                {
+                    type: 'file',
+                    title: 'Video',
+                    options: {
+                        accept: 'video/*',
+                    },
+                    fields: [
+                        {
+                            name: 'hasSound',
+                            title: 'Audio',
+                            type: 'boolean',
+                            description: 'Toggle on if video includes audio (shows mute/unmute controls). Toggle off if video has no audio (hides controls).',
+                            initialValue: true,
+                            options: {
+                                layout: 'checkbox',
+                            },
+                        },
+                    ],
+                    preview: {
+                        select: {
+                            asset: 'asset',
+                            hasSound: 'hasSound',
+                        },
+                        prepare({ asset, hasSound }) {
+                            return {
+                                title: hasSound !== false ? 'Video (With Sound)' : 'Video (No Sound)',
+                                media: asset,
+                            }
+                        },
+                    },
+                    components: {
+                        preview: VideoPreview,
+                    },
                 },
             ],
         }),
