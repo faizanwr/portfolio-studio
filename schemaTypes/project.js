@@ -145,9 +145,11 @@ export default defineType({
                 {
                     type: 'file',
                     title: 'Video',
+                    description: 'Video file (recommended: max 50MB, H.264 codec for best compatibility). Large files may cause slow loading.',
                     options: {
                         accept: 'video/*',
                     },
+                    validation: (Rule) => Rule.required().assetRequired().error('Video file is required'),
                     fields: [
                         {
                             name: 'hasSound',
@@ -155,6 +157,7 @@ export default defineType({
                             type: 'boolean',
                             description: 'Toggle on if video includes audio (shows mute/unmute controls). Toggle off if video has no audio (hides controls).',
                             initialValue: true,
+                            validation: (Rule) => Rule.required().error('Audio setting is required'),
                             options: {
                                 layout: 'checkbox',
                             },
